@@ -1,0 +1,20 @@
+[
+  {
+    "name": "birthday",
+    "date": "2025-11-22",
+    "location": "chirala",
+    "id": 1750301236004
+  },
+  {
+    "name": "retirement2",
+    "date": "2025-11-11",
+    "location": "chennai",
+    "id": 1750301249117
+  },
+  {
+    "name": "party",
+    "date": "2025-12-22",
+    "location": "bangolore",
+    "id": 1750305467942
+  }
+]
