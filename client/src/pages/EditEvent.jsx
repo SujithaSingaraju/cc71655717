@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const EditEvent = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get event ID from URL
   const navigate = useNavigate();
 
   const [event, setEvent] = useState({
@@ -12,39 +12,44 @@ const EditEvent = () => {
   });
 
   useEffect(() => {
-  fetch(`http://localhost:5000/events/${id}`)
-    .then(res => res.json())
-    .then(data => setEvent(data))
-    .catch(err => {
-      alert("Event not found");
-      navigate("/list");
-    });
-}, [id, navigate]);
-
+    fetch(`http://localhost:5000/events/${id}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Event not found");
+        }
+        return res.json();
+      })
+      .then(data => setEvent(data))
+      .catch(err => {
+        alert("Event not found");
+        console.error("Fetch error:", err);
+        navigate("/list");
+      });
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch(`http://localhost:5000/events/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(event)
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:5000/events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(event),
+      });
 
-    if (res.ok) {
-      navigate("/list");
-    } else {
-      alert("Update failed");
+      if (res.ok) {
+        alert("Event updated successfully!");
+        navigate("/list");
+      } else {
+        alert("Update failed");
+      }
+    } catch (err) {
+      console.error("Update error:", err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
+  };
 
   return (
     <div className="max-w-xl mx-auto p-4">
