@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext"; // ✅ import context
 
 const EditEvent = () => {
-  const { id } = useParams(); // Get event ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { userEmail } = useContext(UserContext); // ✅ get userEmail from context
 
   const [event, setEvent] = useState({
     name: "",
@@ -13,14 +15,14 @@ const EditEvent = () => {
 
   useEffect(() => {
     fetch(`http://localhost:5000/events/${id}`)
-      .then(res => {
+      .then((res) => {
         if (!res.ok) {
           throw new Error("Event not found");
         }
         return res.json();
       })
-      .then(data => setEvent(data))
-      .catch(err => {
+      .then((data) => setEvent(data))
+      .catch((err) => {
         alert("Event not found");
         console.error("Fetch error:", err);
         navigate("/list");
@@ -33,11 +35,17 @@ const EditEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!userEmail) {
+      alert("User not logged in.");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:5000/events/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(event),
+        body: JSON.stringify({ ...event, userEmail }), // ✅ include userEmail
       });
 
       if (res.ok) {

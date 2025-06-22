@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext"; // ✅ context import
 
 const AddEvent = () => {
+  const { userEmail } = useContext(UserContext); // ✅ get email from context
   const navigate = useNavigate();
   const [event, setEvent] = useState({
     name: "",
@@ -14,24 +16,29 @@ const AddEvent = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch("http://localhost:5000/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(event)
-    });
+    e.preventDefault();
 
-    if (res.ok) {
-      navigate("/list");
-    } else {
-      alert("Failed to add event");
+    if (!userEmail) {
+      alert("User not logged in.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
 
+    try {
+      const res = await fetch("http://localhost:5000/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...event, userEmail }), // ✅ attach userEmail
+      });
+
+      if (res.ok) {
+        navigate("/list");
+      } else {
+        alert("Failed to add event");
+      }
+    } catch (err) {
+      console.error("Add event error:", err);
+    }
+  };
 
   return (
     <div className="max-w-xl mx-auto p-4">

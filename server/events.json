@@ -1,20 +1,16 @@
 [
   {
-    "name": "birthday",
-    "date": "2025-11-22",
-    "location": "chirala",
-    "id": 1750410136319
-  },
-  {
     "name": "party2",
-    "date": "2025-11-07",
+    "date": "2025-07-22",
     "location": "kolkata",
-    "id": 1750410408073
+    "userEmail": "lucky@gmail.com",
+    "id": 1750562003462
   },
   {
-    "name": "reception22",
+    "name": "marriage",
     "date": "2025-10-20",
-    "location": "gujarat",
-    "id": 1750410464959
+    "location": "chirala",
+    "userEmail": "sujithasingaraju@gmail.com",
+    "id": 1750562068066
   }
 ]

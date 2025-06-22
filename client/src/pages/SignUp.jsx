@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext"; // ✅ Import context
 
 const SignUp = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useContext(UserContext); // ✅ Get login function
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,11 +20,13 @@ const SignUp = () => {
         body: JSON.stringify(form),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
+        login(data.email, data.name); // ✅ auto-login after signup
         alert("Signup successful!");
-        navigate("/login"); // ✅ redirect to login
+        navigate("/"); // ✅ go to home
       } else {
-        const data = await res.json();
         alert(data.error || "Signup failed");
       }
     } catch (err) {

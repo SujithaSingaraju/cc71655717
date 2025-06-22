@@ -42,13 +42,19 @@ app.post("/signup", (req, res) => {
 });
 
 // ✳️ Login Route
+// ✳️ Login Route
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const users = readData(USERS_FILE);
   const user = users.find(u => u.email === email && u.password === password);
 
   if (!user) return res.status(401).json({ error: "Invalid credentials" });
-  res.json({ message: "Login successful", name: user.name });
+
+  res.json({
+    message: "Login successful",
+    name: user.name,
+    email: user.email // ✅ Add this
+  });
 });
 
 // 🟢 Get All Events

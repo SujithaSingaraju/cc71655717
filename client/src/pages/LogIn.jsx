@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext"; // ✅ import context
 
 const LogIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useContext(UserContext); // ✅ use login from context
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,9 +23,10 @@ const LogIn = () => {
       const data = await res.json();
 
       if (res.ok) {
+        login(data.email, data.name); // ✅ set userEmail and userName in context
         localStorage.setItem("user", JSON.stringify(data)); // optional
         alert("Login successful!");
-        navigate("/"); // ✅ redirect to home
+        navigate("/");
       } else {
         alert(data.error || "Login failed");
       }
@@ -66,4 +69,3 @@ const LogIn = () => {
 };
 
 export default LogIn;
-

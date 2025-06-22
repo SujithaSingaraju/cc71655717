@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext"; // ✅ import context
 
 const EventList = () => {
+  const { userEmail } = useContext(UserContext); // ✅ get current user
   const [events, setEvents] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 search input
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/events")
+    if (!userEmail) return; // ⛔ skip fetch if not logged in
+
+    fetch(`http://localhost:5000/events?userEmail=${userEmail}`) // ✅ filter by user
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error("Failed to fetch events", err));
-  }, []);
+  }, [userEmail]); // ✅ triggers again when user logs in
 
   const deleteEvent = async (id) => {
     try {
@@ -33,7 +37,6 @@ const EventList = () => {
     navigate(`/edit/${id}`);
   };
 
-  // 🔍 filter events based on searchTerm
   const filteredEvents = events.filter(event =>
     event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     event.location.toLowerCase().includes(searchTerm.toLowerCase())
@@ -41,9 +44,8 @@ const EventList = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">All Events</h2>
+      <h2 className="text-xl font-bold mb-4">Your Events</h2>
 
-      {/* 🔍 Search input */}
       <input
         type="text"
         placeholder="Search by name or location..."
