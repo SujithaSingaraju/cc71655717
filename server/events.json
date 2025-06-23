@@ -1,16 +1,30 @@
 [
   {
-    "name": "party2",
-    "date": "2025-07-22",
-    "location": "kolkata",
+    "name": "birthday2",
+    "date": "2025-11-11",
+    "location": "delhi",
     "userEmail": "lucky@gmail.com",
-    "id": 1750562003462
+    "id": 1750645389525
   },
   {
-    "name": "marriage",
-    "date": "2025-10-20",
-    "location": "chirala",
-    "userEmail": "sujithasingaraju@gmail.com",
-    "id": 1750562068066
+    "name": "party",
+    "date": "2025-11-10",
+    "location": "delhi",
+    "userEmail": "lucky@gmail.com",
+    "id": 1750647075960
+  },
+  {
+    "name": "retirement",
+    "date": "2025-11-11",
+    "location": "kolkata",
+    "userEmail": "lucky@gmail.com",
+    "id": 1750647123870
+  },
+  {
+    "name": "birthday",
+    "date": "2025-11-11",
+    "location": "delhi",
+    "userEmail": "lucky@gmail.com",
+    "id": 1750648358778
   }
 ]
